@@ -1,0 +1,47 @@
+module.exports = {
+  apps: [
+    {
+      name: 'qim-server',
+      cwd: './server',
+      script: 'dist/src/index.js',
+      instances: 1,
+      exec_mode: 'fork',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3003,
+      },
+      env_development: {
+        NODE_ENV: 'development',
+        PORT: 3003,
+      },
+      watch: false,
+      max_memory_restart: '300M',
+      error_file: '../logs/server-error.log',
+      out_file: '../logs/server-out.log',
+      merge_logs: true,
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+    },
+    {
+      name: 'qim-ai',
+      cwd: './ai-service',
+      script: 'python3',
+      args: '-m uvicorn app.main:app --host 0.0.0.0 --port 8008',
+      interpreter: 'none',
+      instances: 1,
+      exec_mode: 'fork',
+      env: {
+        OLLAMA_BASE_URL: 'http://localhost:11434',
+        OLLAMA_MODEL: 'benedict/linkbricks-gemma2-korean:27b',
+        DB_HOST: '/var/run/postgresql',
+        DB_NAME: 'qim',
+        DB_USER: 'kimboguk',
+      },
+      watch: false,
+      max_memory_restart: '500M',
+      error_file: '../logs/ai-error.log',
+      out_file: '../logs/ai-out.log',
+      merge_logs: true,
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+    },
+  ],
+};
