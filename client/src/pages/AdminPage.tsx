@@ -57,7 +57,7 @@ export default function AdminPage() {
   };
 
   const copyInviteLink = (token: string) => {
-    const link = `${window.location.origin}/register/${token}`;
+    const link = `http://100.99.64.32:5174/register/${token}`;
     navigator.clipboard.writeText(link);
     setCopied(token);
     setTimeout(() => setCopied(null), 2000);
