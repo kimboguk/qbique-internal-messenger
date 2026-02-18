@@ -21,7 +21,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-        <Route path="/register/:token" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+        <Route path="/register/:token" element={<RegisterPage />} />
         <Route path="/" element={<PrivateRoute><ChatPage /></PrivateRoute>} />
         <Route path="/admin" element={<PrivateRoute><AdminPage /></PrivateRoute>} />
         <Route path="/ai" element={<PrivateRoute><AIDashboardPage /></PrivateRoute>} />

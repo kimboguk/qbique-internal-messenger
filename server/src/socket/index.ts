@@ -136,18 +136,20 @@ export function setupSocketHandlers(io: Server) {
     // === 메시지 삭제 ===
     socket.on('delete_message', async (data: { messageId: string }) => {
       const { messageId } = data;
+      console.log(`[delete_message] userId=${userId}, messageId=${messageId}`);
       if (!messageId) return;
 
       // 메시지 조회 (room 접근 권한 + 본인 확인)
       const message = await MessageModel.findById(messageId);
-      if (!message) return;
-      if (message.sender_id !== userId) return;
+      if (!message) { console.log('[delete_message] message not found'); return; }
+      if (message.sender_id !== userId) { console.log(`[delete_message] sender mismatch: ${message.sender_id} !== ${userId}`); return; }
 
       const room = await ChatRoomModel.findById(message.room_id);
-      if (!room) return;
-      if (room.ceo_id !== userId && room.member_id !== userId) return;
+      if (!room) { console.log('[delete_message] room not found'); return; }
+      if (room.ceo_id !== userId && room.member_id !== userId) { console.log('[delete_message] not a participant'); return; }
 
       const deleted = await MessageModel.deleteMessage(messageId, userId);
+      console.log(`[delete_message] deleted=${deleted}, roomId=${message.room_id}`);
       if (deleted) {
         io.to(message.room_id).emit('message_deleted', {
           messageId,

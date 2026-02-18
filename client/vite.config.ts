@@ -22,6 +22,12 @@ export default defineConfig({
       '/ai': {
         target: 'http://localhost:8008',
         changeOrigin: true,
+        bypass(req) {
+          // Let browser page navigations through to the SPA
+          if (req.headers.accept?.includes('text/html')) {
+            return '/index.html';
+          }
+        },
       },
     },
   },

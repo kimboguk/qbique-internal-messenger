@@ -2,7 +2,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional
-from ..database import fetch_messages, fetch_rooms, save_report, fetch_reports, fetch_report_by_id
+from ..database import fetch_messages, fetch_rooms, save_report, fetch_reports, fetch_report_by_id, delete_report
 from ..services.ollama import generate
 from ..prompts.templates import SYSTEM_PROMPT, SUMMARIZE_PROMPT, SEARCH_PROMPT, REPORT_PROMPT
 
@@ -161,6 +161,14 @@ async def get_report(report_id: str):
         "date_to": str(report["date_to"]) if report["date_to"] else None,
         "created_at": report["created_at"].isoformat(),
     }
+
+
+@router.delete("/reports/{report_id}")
+async def remove_report(report_id: str):
+    deleted = delete_report(report_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="리포트를 찾을 수 없습니다.")
+    return {"ok": True}
 
 
 @router.get("/rooms")

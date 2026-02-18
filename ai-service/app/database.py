@@ -125,3 +125,15 @@ def fetch_report_by_id(report_id: str):
             return cur.fetchone()
     finally:
         conn.close()
+
+
+def delete_report(report_id: str) -> bool:
+    """AI 리포트 삭제. 삭제 성공 시 True, 존재하지 않으면 False"""
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM ai_reports WHERE id = %s", (report_id,))
+            conn.commit()
+            return cur.rowcount > 0
+    finally:
+        conn.close()

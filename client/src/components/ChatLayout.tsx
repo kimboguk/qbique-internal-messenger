@@ -28,6 +28,8 @@ export default function ChatLayout() {
     requestPermission();
   }, []);
 
+  const markRoomRead = useChatStore((s) => s.markRoomRead);
+
   const handleSelectRoom = (roomId: string) => {
     if (currentRoomId) {
       socket.leaveRoom(currentRoomId);
@@ -35,6 +37,7 @@ export default function ChatLayout() {
     setCurrentRoom(roomId);
     socket.joinRoom(roomId);
     socket.sendReadReceipt(roomId);
+    markRoomRead(roomId);
   };
 
   const handleLogout = () => {

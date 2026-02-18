@@ -144,6 +144,15 @@ export default function AIDashboardPage() {
     } catch {}
   };
 
+  const handleDeleteReport = async (e: React.MouseEvent, reportId: string) => {
+    e.stopPropagation();
+    if (!confirm('이 리포트를 삭제하시겠습니까?')) return;
+    try {
+      await aiApi.delete(`/reports/${reportId}`);
+      loadReports();
+    } catch {}
+  };
+
   const inputStyle: React.CSSProperties = {
     padding: '0.5rem', border: '1px solid #ddd', borderRadius: '4px', fontSize: '0.9rem',
   };
@@ -288,8 +297,19 @@ export default function AIDashboardPage() {
                       {r.date_to && ` ~ ${r.date_to}`}
                     </div>
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#999', whiteSpace: 'nowrap' }}>
-                    {new Date(r.created_at).toLocaleString('ko-KR')}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
+                    <span style={{ fontSize: '0.75rem', color: '#999' }}>
+                      {new Date(r.created_at).toLocaleString('ko-KR')}
+                    </span>
+                    <button
+                      onClick={(e) => handleDeleteReport(e, r.id)}
+                      style={{
+                        padding: '0.2rem 0.5rem', fontSize: '0.75rem', background: '#fff',
+                        color: '#d32f2f', border: '1px solid #d32f2f', borderRadius: '4px', cursor: 'pointer',
+                      }}
+                    >
+                      삭제
+                    </button>
                   </div>
                 </div>
               ))}
