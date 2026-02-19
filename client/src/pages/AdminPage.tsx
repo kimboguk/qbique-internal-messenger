@@ -20,6 +20,8 @@ export default function AdminPage() {
   const [invites, setInvites] = useState<InviteToken[]>([]);
   const [creating, setCreating] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
+  const [editingTitle, setEditingTitle] = useState<string | null>(null);
+  const [titleValue, setTitleValue] = useState('');
 
   // CEO 전용 페이지
   useEffect(() => {
@@ -43,6 +45,17 @@ export default function AdminPage() {
 
   const handleToggleActive = async (memberId: string, isActive: boolean) => {
     await api.patch(`/users/${memberId}`, { is_active: !isActive });
+    loadMembers();
+  };
+
+  const handleStartEditTitle = (memberId: string, currentTitle: string | null | undefined) => {
+    setEditingTitle(memberId);
+    setTitleValue(currentTitle || '');
+  };
+
+  const handleSaveTitle = async (memberId: string) => {
+    await api.patch(`/users/${memberId}`, { title: titleValue.trim() || null });
+    setEditingTitle(null);
     loadMembers();
   };
 
@@ -85,6 +98,7 @@ export default function AdminPage() {
             <thead>
               <tr style={{ borderBottom: '1px solid #ddd', textAlign: 'left' }}>
                 <th style={{ padding: '0.75rem 0.5rem' }}>이름</th>
+                <th style={{ padding: '0.75rem 0.5rem' }}>직책</th>
                 <th style={{ padding: '0.75rem 0.5rem' }}>이메일</th>
                 <th style={{ padding: '0.75rem 0.5rem' }}>상태</th>
                 <th style={{ padding: '0.75rem 0.5rem' }}>가입일</th>
@@ -95,6 +109,33 @@ export default function AdminPage() {
               {members.map((m) => (
                 <tr key={m.id} style={{ borderBottom: '1px solid #eee' }}>
                   <td style={{ padding: '0.75rem 0.5rem' }}>{m.name}</td>
+                  <td style={{ padding: '0.75rem 0.5rem' }}>
+                    {editingTitle === m.id ? (
+                      <input
+                        value={titleValue}
+                        onChange={(e) => setTitleValue(e.target.value)}
+                        onBlur={() => handleSaveTitle(m.id)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleSaveTitle(m.id);
+                          if (e.key === 'Escape') setEditingTitle(null);
+                        }}
+                        autoFocus
+                        placeholder="직책 입력"
+                        style={{
+                          width: '100%', padding: '0.3rem 0.5rem', border: '1px solid #1976d2',
+                          borderRadius: '4px', fontSize: '0.85rem', outline: 'none',
+                        }}
+                      />
+                    ) : (
+                      <span
+                        onClick={() => handleStartEditTitle(m.id, m.title)}
+                        style={{ cursor: 'pointer', color: m.title ? '#333' : '#bbb', fontSize: '0.85rem' }}
+                        title="클릭하여 직책 편집"
+                      >
+                        {m.title || '클릭하여 설정'}
+                      </span>
+                    )}
+                  </td>
                   <td style={{ padding: '0.75rem 0.5rem', color: '#666' }}>{m.email}</td>
                   <td style={{ padding: '0.75rem 0.5rem' }}>
                     <span style={{

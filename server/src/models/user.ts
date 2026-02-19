@@ -5,6 +5,7 @@ export interface User {
   name: string;
   email: string;
   role: 'ceo' | 'member';
+  title: string | null;
   password_hash: string;
   is_active: boolean;
   created_at: Date;
@@ -29,7 +30,7 @@ export const UserModel = {
   async findAllMembers(): Promise<UserPublic[]> {
     return db('users')
       .where({ role: 'member' })
-      .select('id', 'name', 'email', 'role', 'is_active', 'created_at', 'last_seen_at')
+      .select('id', 'name', 'email', 'role', 'title', 'is_active', 'created_at', 'last_seen_at')
       .orderBy('created_at', 'asc');
   },
 
@@ -42,7 +43,15 @@ export const UserModel = {
     const [user] = await db('users')
       .where({ id })
       .update({ is_active: isActive })
-      .returning(['id', 'name', 'email', 'role', 'is_active', 'created_at', 'last_seen_at']);
+      .returning(['id', 'name', 'email', 'role', 'title', 'is_active', 'created_at', 'last_seen_at']);
+    return user;
+  },
+
+  async updateProfile(id: string, data: Partial<Pick<User, 'name' | 'email' | 'title'>>): Promise<UserPublic | undefined> {
+    const [user] = await db('users')
+      .where({ id })
+      .update(data)
+      .returning(['id', 'name', 'email', 'role', 'title', 'is_active', 'created_at', 'last_seen_at']);
     return user;
   },
 

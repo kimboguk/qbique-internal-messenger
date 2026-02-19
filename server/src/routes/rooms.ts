@@ -17,7 +17,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response): Promise<v
         const otherUserId = req.user!.role === 'ceo' ? room.member_id : room.ceo_id;
         const otherUser = await db('users')
           .where({ id: otherUserId })
-          .select('id', 'name', 'email', 'is_active')
+          .select('id', 'name', 'email', 'title', 'is_active')
           .first();
 
         // 안읽은 메시지 수

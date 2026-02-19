@@ -37,8 +37,14 @@ export default function RoomList({ rooms, currentRoomId, onSelectRoom }: RoomLis
                 width: '8px', height: '8px', borderRadius: '50%',
                 background: isOnline ? '#4caf50' : '#ccc',
                 display: 'inline-block',
+                flexShrink: 0,
               }} />
-              <span style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>{name}</span>
+              <div>
+                <span style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>{name}</span>
+                {otherUser?.title && (
+                  <div style={{ fontSize: '0.7rem', color: '#888', marginTop: '1px' }}>{otherUser.title}</div>
+                )}
+              </div>
             </div>
 
             {/* 주제별 채팅방 */}

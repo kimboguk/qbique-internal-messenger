@@ -3,6 +3,7 @@ export interface User {
   name: string;
   email: string;
   role: 'ceo' | 'member';
+  title?: string | null;
   is_active?: boolean;
   created_at?: string;
   last_seen_at?: string | null;
@@ -19,6 +20,7 @@ export interface ChatRoom {
     id: string;
     name: string;
     email: string;
+    title?: string | null;
     is_active: boolean;
   };
   unread_count?: number;

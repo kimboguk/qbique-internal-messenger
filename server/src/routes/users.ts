@@ -20,7 +20,22 @@ router.get('/', authenticate, requireCeo, async (req: AuthRequest, res: Response
 router.patch('/:id', authenticate, requireCeo, async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const { is_active } = req.body;
+    const { is_active, title } = req.body;
+
+    // title만 변경하는 경우
+    if (title !== undefined && is_active === undefined) {
+      if (typeof title !== 'string' && title !== null) {
+        res.status(400).json({ error: 'title은 문자열 또는 null이어야 합니다.' });
+        return;
+      }
+      const user = await UserModel.updateProfile(id, { title: title || null });
+      if (!user) {
+        res.status(404).json({ error: '사용자를 찾을 수 없습니다.' });
+        return;
+      }
+      res.json(user);
+      return;
+    }
 
     if (typeof is_active !== 'boolean') {
       res.status(400).json({ error: 'is_active 값을 boolean으로 전달해주세요.' });
