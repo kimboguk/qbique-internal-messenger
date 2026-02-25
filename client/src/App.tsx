@@ -5,6 +5,9 @@ import RegisterPage from './pages/RegisterPage';
 import ChatPage from './pages/ChatPage';
 import AdminPage from './pages/AdminPage';
 import AIDashboardPage from './pages/AIDashboardPage';
+import DocumentsPage from './pages/DocumentsPage';
+import DocumentEditorPage from './pages/DocumentEditorPage';
+import DocumentViewPage from './pages/DocumentViewPage';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -25,6 +28,10 @@ function App() {
         <Route path="/" element={<PrivateRoute><ChatPage /></PrivateRoute>} />
         <Route path="/admin" element={<PrivateRoute><AdminPage /></PrivateRoute>} />
         <Route path="/ai" element={<PrivateRoute><AIDashboardPage /></PrivateRoute>} />
+        <Route path="/documents" element={<PrivateRoute><DocumentsPage /></PrivateRoute>} />
+        <Route path="/documents/new" element={<PrivateRoute><DocumentEditorPage /></PrivateRoute>} />
+        <Route path="/documents/:id" element={<PrivateRoute><DocumentViewPage /></PrivateRoute>} />
+        <Route path="/documents/:id/edit" element={<PrivateRoute><DocumentEditorPage /></PrivateRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

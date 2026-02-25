@@ -9,6 +9,9 @@ import inviteRoutes from './routes/invites';
 import userRoutes from './routes/users';
 import roomRoutes from './routes/rooms';
 import uploadRoutes from './routes/upload';
+import documentRoutes from './routes/documents';
+import documentCategoryRoutes from './routes/documentCategories';
+import formTemplateRoutes from './routes/formTemplates';
 import { ipWhitelist } from './middleware/ipWhitelist';
 import { setupSocketHandlers } from './socket';
 
@@ -40,6 +43,9 @@ app.use('/api/invites', inviteRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/rooms', roomRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/documents', documentRoutes);
+app.use('/api/document-categories', documentCategoryRoutes);
+app.use('/api/form-templates', formTemplateRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {

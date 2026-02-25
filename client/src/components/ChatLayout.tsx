@@ -58,6 +58,12 @@ export default function ChatLayout() {
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.3rem' }}>
+            <button
+              onClick={() => navigate('/documents')}
+              style={{ padding: '0.3rem 0.7rem', border: '1px solid #ddd', borderRadius: '4px', background: '#fff', cursor: 'pointer', fontSize: '0.8rem' }}
+            >
+              문서
+            </button>
             {user?.role === 'ceo' && (
               <>
                 <button

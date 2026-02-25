@@ -47,6 +47,87 @@ export interface Attachment {
   file_size: number;
 }
 
+// Document Management Types
+export interface DocumentCategory {
+  id: string;
+  name: string;
+  description?: string | null;
+  sort_order: number;
+  is_active: boolean;
+  created_by: string;
+  created_at: string;
+}
+
+export interface DocumentTag {
+  id: string;
+  name: string;
+  created_at: string;
+}
+
+export interface FormTemplateField {
+  key: string;
+  label: string;
+  type: 'text' | 'number' | 'date' | 'select' | 'textarea';
+  options?: string[];
+  required?: boolean;
+}
+
+export interface FormTemplate {
+  id: string;
+  name: string;
+  description?: string | null;
+  category_id?: string | null;
+  schema: { fields: FormTemplateField[] };
+  is_active: boolean;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Document {
+  id: string;
+  title: string;
+  doc_type: 'freeform' | 'form';
+  content: string | null;
+  template_id: string | null;
+  category_id: string | null;
+  status: 'draft' | 'pending' | 'approved' | 'rejected';
+  is_public: boolean;
+  author_id: string;
+  reviewed_by: string | null;
+  review_comment: string | null;
+  reviewed_at: string | null;
+  created_at: string;
+  updated_at: string;
+  // Joined fields
+  author_name?: string;
+  author_email?: string;
+  category_name?: string;
+  reviewer_name?: string;
+  author?: { id: string; name: string };
+  category?: { id: string; name: string } | null;
+  tags?: DocumentTag[];
+  shares?: DocumentShare[];
+  attachments?: DocumentAttachment[];
+}
+
+export interface DocumentShare {
+  id: string;
+  user_id: string;
+  user_name: string;
+  user_email: string;
+}
+
+export interface DocumentAttachment {
+  id: string;
+  document_id: string;
+  filename: string;
+  filepath: string;
+  file_type: string | null;
+  file_size: number | null;
+  created_at: string;
+}
+
 export interface AuthTokens {
   accessToken: string;
   refreshToken: string;

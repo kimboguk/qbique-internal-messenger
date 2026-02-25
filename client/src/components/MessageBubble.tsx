@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Message } from '../types';
 import { useAuthStore } from '../stores/authStore';
 
@@ -9,11 +10,29 @@ interface MessageBubbleProps {
 
 export default function MessageBubble({ message, onDelete }: MessageBubbleProps) {
   const userId = useAuthStore((s) => s.user?.id);
+  const navigateFn = useNavigate();
   const isMine = message.sender_id === userId;
   const isSystem = message.message_type === 'system';
   const isFile = message.message_type === 'file';
 
   if (isSystem) {
+    // Check for document link pattern: [문서] Title (/documents/uuid)
+    const docLinkMatch = message.content.match(/\[문서\]\s*(.+?)\s*\(\/documents\/([a-f0-9-]+)\)/);
+    if (docLinkMatch) {
+      const docTitle = docLinkMatch[1];
+      const docId = docLinkMatch[2];
+      return (
+        <div style={{ textAlign: 'center', margin: '0.5rem 0', color: '#999', fontSize: '0.8rem' }}>
+          <span
+            onClick={() => navigateFn(`/documents/${docId}`)}
+            style={{ color: '#1976d2', cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            [문서] {docTitle}
+          </span>
+        </div>
+      );
+    }
+
     return (
       <div style={{ textAlign: 'center', margin: '0.5rem 0', color: '#999', fontSize: '0.8rem' }}>
         {message.content}
