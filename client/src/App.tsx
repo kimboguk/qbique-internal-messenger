@@ -8,6 +8,7 @@ import AIDashboardPage from './pages/AIDashboardPage';
 import DocumentsPage from './pages/DocumentsPage';
 import DocumentEditorPage from './pages/DocumentEditorPage';
 import DocumentViewPage from './pages/DocumentViewPage';
+import CorporateFormsPage from './pages/CorporateFormsPage';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -32,6 +33,7 @@ function App() {
         <Route path="/documents/new" element={<PrivateRoute><DocumentEditorPage /></PrivateRoute>} />
         <Route path="/documents/:id" element={<PrivateRoute><DocumentViewPage /></PrivateRoute>} />
         <Route path="/documents/:id/edit" element={<PrivateRoute><DocumentEditorPage /></PrivateRoute>} />
+        <Route path="/corporate-forms" element={<PrivateRoute><CorporateFormsPage /></PrivateRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

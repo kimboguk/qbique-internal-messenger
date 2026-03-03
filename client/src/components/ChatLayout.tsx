@@ -64,6 +64,12 @@ export default function ChatLayout() {
             >
               문서
             </button>
+            <button
+              onClick={() => navigate('/corporate-forms')}
+              style={{ padding: '0.3rem 0.7rem', border: '1px solid #ddd', borderRadius: '4px', background: '#fff', cursor: 'pointer', fontSize: '0.8rem' }}
+            >
+              서식
+            </button>
             {user?.role === 'ceo' && (
               <>
                 <button

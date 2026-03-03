@@ -12,6 +12,7 @@ import uploadRoutes from './routes/upload';
 import documentRoutes from './routes/documents';
 import documentCategoryRoutes from './routes/documentCategories';
 import formTemplateRoutes from './routes/formTemplates';
+import corporateFormRoutes from './routes/corporateForms';
 import { ipWhitelist } from './middleware/ipWhitelist';
 import { setupSocketHandlers } from './socket';
 
@@ -46,6 +47,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/document-categories', documentCategoryRoutes);
 app.use('/api/form-templates', formTemplateRoutes);
+app.use('/api/corporate-forms', corporateFormRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {
