@@ -78,7 +78,7 @@ export default function CorporateFormsPage() {
   };
 
   const canPreview = (file: FormFile) => {
-    return file.type === 'pdf' || file.type === 'docx' || file.type === 'doc';
+    return file.type === 'pdf';
   };
 
   return (

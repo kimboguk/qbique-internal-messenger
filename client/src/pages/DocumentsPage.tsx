@@ -7,8 +7,8 @@ import StatusBadge from '../components/documents/StatusBadge';
 export default function DocumentsPage() {
   const navigate = useNavigate();
   const {
-    documents, totalDocuments, categories, tags, filters,
-    setDocuments, setCategories, setTags, setFilters,
+    documents, totalDocuments, categories, filters,
+    setDocuments, setCategories, setFilters,
   } = useDocumentStore();
 
   const totalPages = Math.ceil(totalDocuments / filters.limit);
