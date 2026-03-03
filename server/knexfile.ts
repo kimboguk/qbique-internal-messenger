@@ -28,13 +28,19 @@ const knexConfig: { [key: string]: Knex.Config } = {
 
   production: {
     client: 'pg',
-    connection: {
-      host: '100.99.64.32',
-      port: config.db.port,
-      database: config.db.name,
-      user: config.db.user,
-      password: config.db.password,
-    },
+    connection: config.db.password
+      ? {
+          host: config.db.host,
+          port: config.db.port,
+          database: config.db.name,
+          user: config.db.user,
+          password: config.db.password,
+        }
+      : {
+          host: '/var/run/postgresql',
+          database: config.db.name,
+          user: config.db.user,
+        },
     migrations: {
       directory: './migrations',
       extension: 'ts',
