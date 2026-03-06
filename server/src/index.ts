@@ -14,6 +14,7 @@ import documentCategoryRoutes from './routes/documentCategories';
 import formTemplateRoutes from './routes/formTemplates';
 import corporateFormRoutes from './routes/corporateForms';
 import { ipWhitelist } from './middleware/ipWhitelist';
+import { accessLog } from './middleware/accessLog';
 import { setupSocketHandlers } from './socket';
 
 const app = express();
@@ -27,6 +28,7 @@ const io = new Server(httpServer, {
 
 // Middleware
 app.use(cors());
+app.use(accessLog);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
